@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<head>
+<title>
+Assignment3_sreyash
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<script>
+
+var dll = [];
+var j=1;
+var l = 1;
+
+function send()
+{	  
+	
+	
+	var checkval=[];
+	var genderval;
+	var k=0;
+    var cboxes = document.getElementsByName('language');
+    var len = cboxes.length;
+	
+    for (var i=0; i<len; i++) 
+	{
+        if (cboxes[i].checked == true )
+		{
+			checkval[k] = cboxes[i].value;	
+			k++;
+		}
+	}
+	
+	
+	if(document.getElementById("g1").checked)
+	{
+		genderval = document.getElementById("g1").value;
+	}
+	else
+	{
+		genderval = document.getElementById("g2").value;
+	}
+	
+	
+	var details =
+	{
+		fname : document.getElementById("f1").value,
+		lname : document.getElementById("f2").value,
+		email : document.getElementById("f3").value,
+		phone : document.getElementById("f4").value,
+		address : document.getElementById("address").value,
+		uname : document.getElementById("f6").value	,
+		password : document.getElementById("f7").value,
+		gender : genderval,
+		qualification : document.getElementById("qual").value,
+		experience : document.getElementById("exp1").value,
+		lang : checkval 
+	};
+	
+	/*dll[j]=details[j];
+	alert(dll[j].fname + "a");
+	j=j+1;*/
+	
+	var usernm = [];
+	usernm[l]=details.uname;
+	alert("a"+usernm[l]);
+	l++;
+	var ab = unique(usernm);
+	if(ab == false )
+	{
+	break;
+	}
+	
+	var table = document.getElementById("myTable");
+	for( i=0 ; i < 1 ; i++)
+	{			
+		var row = table.insertRow(1);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);
+		var cell5 = row.insertCell(4);
+		var cell6 = row.insertCell(5);
+		var cell7 = row.insertCell(6);
+		var cell8 = row.insertCell(7);
+		var cell9 = row.insertCell(8);
+		var cell10 = row.insertCell(9);
+		var cell11 = row.insertCell(10);
+		var cell12 = row.insertCell(11);
+		var cell13 = row.insertCell(12);
+		cell1.innerHTML = details.fname;
+		cell2.innerHTML = details.lname;
+		cell3.innerHTML = details.email;
+		cell4.innerHTML = details.phone;
+		cell5.innerHTML = details.address;
+		cell6.innerHTML = details.uname;
+		cell7.innerHTML = details.password;
+		cell8.innerHTML = details.gender;
+		cell9.innerHTML = details.qualification;
+		cell10.innerHTML = details.experience;
+		cell11.innerHTML = details.lang;
+		cell12.innerHTML = '<button onclick="myDeleteFunction()" >Delete row</button>';
+		cell13.innerHTML = '<button onclick=" Edit(details)" >Edit row</button>';
+		
+	}	
+	
+	event.preventDefault();
+
+		document.getElementById("f1").value = '';
+		document.getElementById("f2").value = '';
+		document.getElementById("f3").value = '';
+		document.getElementById("f4").value = '';
+		document.getElementById("address").value = '';
+		document.getElementById("f6").value = '';
+		document.getElementById("f7").value = '';
+		document.getElementById("qual").value = '';
+		document.getElementById("exp1").value = '';
+		document.getElementsByName('language') = '';
+		document.getElementsByName('gender') = '';
+	
+	
+	
+}
+
+ function unique(user)
+{
+	var i;
+	var k =1;
+	for(i=0; i < user.length ;i++)
+	{
+	if(user[i] == document.getElementById("f6"))
+	{
+	k=k+1;
+	}
+	}
+	if(k>1)
+	{
+	alert("the username is not valid ");
+	return false;
+	k=1;
+	}
+} 
+
+function Edit(details)
+{
+		alert();
+		document.getElementById("f1").value = details.fname;
+		document.getElementById("f2").innerHTML = details.lname;
+		document.getElementById("f3").innerHTML = details.email;
+		document.getElementById("f4").innerHTML = details.phone;
+		document.getElementById("address").innerHTML = details.address;
+		document.getElementById("f6").innerHTML = details.uname;
+		document.getElementById("f7").innerHTML = details.password;
+		document.getElementById("qual").innerHTML = details.qualification;
+		document.getElementById("exp1").innerHTML = details.experience;
+}
+
+
+function myDeleteFunction()
+{	
+    document.getElementById("myTable").deleteRow(0);
+}
+</script>
+
+
+
+<form onsubmit="send()" id="form1" >
+
+<label>First Name :<br/> <input type="text" name="fname" id="f1" required /></label>
+<br/><br/>
+<label>Last Name : <br/><input type="text" name="lname" id="f2" required /></label>
+<br/><br/>
+<label>Email : <br/><input type="email" name="emailadd" id="f3" required /></label>
+<br/><br/>
+<label>Contact Number : <br/><input type="tel" name="contact" id="f4" /></label>
+<br/><br/>
+Address: <br/><textarea id="address" maxlength="20" minlength="10" name="address" rows="5" cols="17" required></textarea>
+<br/><br/>
+<label>Username : <br/> <input type="text" name="uname" id="f6" required /></label>
+<br/><br/>
+<label>Password : <br/> <input type="password" name="password" id="f7" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" 
+required /></label>
+<br/><br/>
+
+<div required >
+Gender : <br/>
+
+<input type="radio" id="g1" name="gender" value="male" required />Male
+<br/>
+<input type="radio" id="g2" name="gender" value="female" />Female
+</div>
+<br/><br/>
+
+Qualifications:<br/>
+<select id="qual" name="qual1" required >
+<option value="" >--select--</option>
+<option> B.com </option>
+<option> Batchelor in technology </option>
+<option> MBA </option>
+<option> BE </option>
+</select>
+<br/><br/>
+
+Experience:<br/>
+<select id="exp1" name="exp" >
+<option value="" >--select--</option>
+<option> 1-2 years</option>
+<option> 2-4 years</option>
+<option> 4-6 years</option>
+<option> > 6 years</option>
+</select>
+
+<br/><br/>
+Coding Languages: <br/>
+<label><input type="checkbox" id="lang1" name="language" value="C/C++" ></input>C/C++</label> <br/>
+<label><input type="checkbox" id="lang2" name="language"  value="C#"></input>C#</label> <br/>
+<label><input type="checkbox" id="lang3" name="language" value="Java"></input>Java</label> <br/>
+<label><input type="checkbox" id="lang4" name="language" value="PHP"></input>PHP</label> <br/>
+<label><input type="checkbox" id="lang5" name="language" value="Python"></input>Python</label> 
+<br/>
+<br/>
+<br/>
+
+<input type="Submit" value="submit" />
+
+</form>
+
+
+<br/><br/><br/>
+
+  <div class="table-responsive">          
+	  <table class="table" >    
+		  <tr>
+			<th>Firstname</th>
+			<th>Lastname</th>
+			<th>Email</th>
+			<th>Contact</th>
+			<th>Address</th>
+			<th>Username</th>
+			<th>Password</th>
+			<th>Gender</th>
+			<th>Qualifications</th>
+			<th>Experience</th>
+			<th>Coding Languages</th>
+			<th>Delete??</th>
+			<th>Edit??</th>
+		  </tr>
+		  
+			<tr>
+			<table class="table" id="myTable">    
+		  <tr></tr>
+		  </table>
+		  </tr>
+		  
+		  </table>		  
+		  
+	  
+  </div>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<head>
+<title>
+Assignment3_sreyash
+</title>
+</head>
+<body>
+
+<script>
+
+window.onload = function()
+{
+	var exp = ['1-2 years' , '2-4 years' , '4-6 years' , ' > 6 years'];
+	var i;
+	for( i= 0; i < exp.length ; i++)
+	{
+		var a1 = exp[i];
+		var option = document.createElement("option");
+		option.text = a1;
+		option.value = a1;
+		var select = document.getElementById('exp1');
+		select.add(option);
+	}
+	var qual = ['B.com' , 'B.tech' , 'MBA' ];
+
+	for( i= 0; i < qual.length ; i++)
+	{
+		var b1 = qual[i];
+		var option1 = document.createElement("option");
+		option1.text = b1;
+		option1.value = b1;
+		var select1 = document.getElementById('qual');
+		select1.add(option1);
+	}
+
+	function lang(name , enable)
+	{
+		this.languagename = name;
+		this.Isenabled = enable;
+	}
+	
+	var c= new lang('C/C++' , 'false');
+	var c1= new lang('C#' , 'true');
+	var java= new lang('java' , 'true');
+	var php= new lang('PHP' , 'false');
+	var python= new lang('Python' , 'false');
+
+	var check = [c,c1,java,php,python];
+
+	for(i=0 ; i < check.length ; i++)
+	{
+		var checkbox = document.createElement("input");
+		checkbox.type="checkbox";
+		checkbox.name="language";
+		checkbox.value=check[i].languagename;
+		checkbox.id=check[i].languagename;
+		if(check[i].languagename == "java" || check[i].languagename == "C#")
+		{
+			checkbox.checked = true;
+		}
+
+		var label = document.createElement("label");
+		label.htmlFor=check[i].languagename;
+		label.appendChild(document.createTextNode(check[i].languagename));
+
+		k1.appendChild(checkbox);
+		k1.appendChild(label);
+
+		var br = document.createElement("br");
+		k1.appendChild(br);
+	}
+}
+
+function send()
+{
+	alert();
+	var checkval=[];
+	var genderval;
+	var k=0;
+    var cboxes = document.getElementsByName('language');
+    var len = cboxes.length;
+    for (var i=0; i<len; i++) 
+	{
+        if (cboxes[i].checked == true )
+		{
+			checkval[k] = cboxes[i].value;	
+			k++;
+		}
+	}
+
+	if(document.getElementById("g1").checked)
+	{
+		genderval = document.getElementById("g1").value;
+	}
+	else
+	{
+		genderval = document.getElementById("g2").value;
+	}
+
+
+	var details =
+	{
+		fname : document.getElementById("f1").value,
+		lname : document.getElementById("f2").value,
+		email : document.getElementById("f3").value,
+		phone : document.getElementById("f4").value,
+		address : document.getElementById("address").value,
+		uname : document.getElementById("f6").value	,
+		password : document.getElementById("f7").value,
+		gender : genderval,
+		qualification : document.getElementById("qual").value,
+		experience : document.getElementById("exp1").value,
+		lang : checkval 
+	};
+	
+	console.log(details.fname);
+	console.log(details.lname);
+	console.log(details.email);
+	console.log(details.phone);
+	console.log(details.address);
+	console.log(details.uname);
+	console.log(details.password);
+	console.log(details.gender);
+	console.log(details.qualification);
+	console.log(details.experience);
+	console.log(details.lang);
+
+}
+
+</script>
+
+
+
+<form onsubmit="send()">
+
+<label>First Name :<br/> <input type="text" name="fname" id="f1" /></label>
+<br/><br/>
+<label>Last Name : <br/><input type="text" name="lname" id="f2" /></label>
+<br/><br/>
+<label>Email : <br/><input type="email" name="emailadd" id="f3" /></label>
+<br/><br/>
+<label>Contact Number : <br/><input type="tel" name="contact" id="f4" /></label>
+<br/><br/>
+Address: <br/><textarea id="address" name"address" rows="5" cols="17"></textarea>
+<br/><br/>
+<label>Username : <br/> <input type="text" name="uname" id="f6" /></label>
+<br/><br/>
+<label>Password : <br/> <input type="password" name="password" id="f7" /></label>
+<br/><br/>
+
+Gender : <br/>
+
+<input type="radio" id="g1" name="gender" value="male" />Male
+<br/>
+<input type="radio" id="g2" name="gender" value="female" />Female
+
+<br/><br/>
+
+Qualifications:<br/>
+<select id="qual" name="qual1" ></select>
+
+<br/><br/>
+
+Experience:<br/>
+<select id="exp1" name="exp" ></select>
+
+<div id="k1">
+<br/><br/>
+Coding Languages: <br/>
+</div>
+
+<br/><br/><br/>
+
+<input type="Submit" value="submit"  />
+
+</form>
+</body>
+</html>
+

@@ -1,0 +1,72 @@
+body
+{
+background-color :#d8da3d;
+font-family : Georgia;
+font-color: white;
+color:purple;
+}
+
+.lists
+{
+	position: absolute;
+	top:20px;
+	left:0px;
+	width:280px;	
+}
+
+ul
+{
+	list-style:none;
+}
+	
+ul li 
+{
+	display:inline-block;
+	width:150px;
+	background-color:white;
+	margin:5px;
+	padding:6px 15px 5px 10px;
+	border-right-style:solid;
+	border-right-color:black;
+	border-right-width:15px;	
+}
+
+.description
+{
+	margin-left:280px;
+}
+
+#date
+{
+	font:purple;
+	font-style:italic;
+	width:190px;
+}
+
+li a
+{
+	color:purple;
+	text-decoration:none;
+}
+
+#head
+{
+	font-size:35px;
+	font-weight:bold;
+	font-family: sans-serif;
+}
+
+p
+{
+	margin-top:20px;
+}
+
+.tsst
+{	
+	padding-bottom:25px;
+}
+
+hr
+{
+	border:1px dotted purple;
+}

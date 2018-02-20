@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<head>
+<title>
+Assignment3_sreyash
+</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<script>
+
+
+function initDatabase() {
+	try {
+	    if (!window.openDatabase) 
+		{
+	        alert('Databases are not supported in this browser.');
+	    } 
+		else 
+		{
+	     	var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+			createTables();
+	    }
+	} catch(e) {
+ 
+	    if (e == 2) {
+	        // Version number mismatch.
+	        console.log("Invalid database version.");
+	    } else {
+	        console.log("Unknown error "+e+".");
+	    }
+	    return;
+	}
+}
+
+function createTables(){
+	var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+		db.transaction(
+			function (transaction) {
+				transaction.executeSql('CREATE TABLE IF NOT EXISTS emp_details(id INTEGER PRIMARY KEY AUTOINCREMENT,fname TEXT NOT NULL,lname TEXT NOT NULL,email TEXT NOT NULL,contact TEXT NOT NULL,address TEXT NOT NULL,username TEXT NOT NULL,password TEXT NOT NULL,gender TEXT NOT NULL, qualification TEXT, experience TEXT,language TEXT NOT NULL);', []);
+			}
+		);
+}
+
+
+window.onload = function()
+{	
+	initDatabase();
+	selectAll();
+}
+
+
+
+function selectAll()
+{
+	var book = [];
+	var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+	
+		db.transaction(function (tx) {
+		   tx.executeSql('SELECT * FROM emp_details', [], function (tx, results) {
+			  var len = results.rows.length;
+				var i;
+			  		//window.alert(len);
+			  for (i = 0; i < len; i++)
+			  {
+				book[i]=results.rows.item(i);
+				//window.alert(results.rows.item(i).fname );
+			  }		
+				var table = document.getElementById("myTable");
+				for( i=0 ; i < len ; i++)
+				{		
+					var empnew = results.rows.item(i);
+					var row = table.insertRow(1);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					var cell4 = row.insertCell(3);
+					var cell5 = row.insertCell(4);
+					var cell6 = row.insertCell(5);
+					var cell7 = row.insertCell(6);
+					var cell8 = row.insertCell(7);
+					var cell9 = row.insertCell(8);
+					var cell10 = row.insertCell(9);
+					var cell11 = row.insertCell(10);
+					var cell12 = row.insertCell(11);
+					var cell13 = row.insertCell(12);
+					cell1.innerHTML = book[i].fname;
+					cell2.innerHTML = book[i].lname;
+					cell3.innerHTML = book[i].email;
+					cell4.innerHTML = book[i].contact;
+					cell5.innerHTML = book[i].address;
+					cell6.innerHTML = book[i].username;
+					cell7.innerHTML = book[i].password;
+					cell8.innerHTML = book[i].gender;
+					cell9.innerHTML = book[i].qualification;
+					cell10.innerHTML = book[i].experience;
+					cell11.innerHTML = book[i].language;
+					cell12.innerHTML = '<a href="#" onclick="del(' + empnew.id + ')">Delete row</a>';
+					cell13.innerHTML = '<a href="#" onclick="edit(' + empnew.id + ')">Edit row</a>';
+				}				
+		   }, null);
+		});
+}
+
+
+
+
+function send()
+{
+	alert("working insertion");
+	var checkval=[];
+	var genderval;
+	var k=0;
+    var cboxes = document.getElementsByName('language');
+    var len = cboxes.length;
+    for (var i=0; i<len; i++) 
+	{
+        if (cboxes[i].checked == true )
+		{
+			checkval[k] = cboxes[i].value;	
+			k++;
+		}
+	}
+	if(document.getElementById("g1").checked)
+	{
+		genderval = document.getElementById("g1").value;
+	}
+	else
+	{
+		genderval = document.getElementById("g2").value;
+	}
+	var details =
+	{
+		fname : document.getElementById("f1").value,
+		lname : document.getElementById("f2").value,
+		email : document.getElementById("f3").value,
+		phone : document.getElementById("f4").value,
+		address : document.getElementById("address").value,
+		uname : document.getElementById("f6").value	,
+		password : document.getElementById("f7").value,
+		gender : genderval,
+		qualification : document.getElementById("qual").value,
+		experience : document.getElementById("exp1").value,
+		lang : checkval 
+	};	
+	var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);		
+	db.transaction(
+	    function (transaction) {
+		var data = [details.fname,details.lname,details.email,details.phone,details.address,details.uname,details.password,details.gender,details.qualification,details.experience,details.lang];
+		transaction.executeSql("INSERT INTO emp_details(fname, lname, email, contact, address, username, password, gender, qualification, experience, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [data[0], data[1], data[2], data[3], data[4],data[5],data[6],data[7],data[8],data[9],data[10]]);
+	    }
+	);	
+	
+}
+
+
+
+
+ function del(id) 
+ {
+    var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+	
+		db.transaction(function (tx) {
+		   var result = confirm('Are you sure You want to delete ');
+		   if(result === true)
+				tx.executeSql('delete from emp_details where id = ?', [id],selectAll());				
+});
+location.reload();
+}
+
+function edit(id) 
+ {
+    var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);	
+		db.transaction(function (tx) {
+		   tx.executeSql('SELECT * FROM emp_details where id = ?', [id], function (tx, results) {
+			var item = results.rows.item(0);
+			document.getElementById("id").value=item.id;
+			document.getElementById("f1").value=item.fname;
+			document.getElementById("f2").value=item.lname;
+			document.getElementById("f3").value=item.email;
+			document.getElementById("f4").value=item.contact;
+			document.getElementById("address").value=item.address;
+			document.getElementById("f6").value=item.username;
+			document.getElementById("f7").value=item.password;
+		    document.getElementById("qual").value=item.qualification;
+		    document.getElementById("exp1").value=item.experience;
+   }, null);
+		});
+
+}
+
+function save()
+{
+	alert("working edit");
+	var checkval=[];
+	var genderval;
+	var k=0;
+    var cboxes = document.getElementsByName('language');
+    var len = cboxes.length;
+    for (var i=0; i<len; i++) 
+	{
+        if (cboxes[i].checked == true )
+		{
+			checkval[k] = cboxes[i].value;	
+			k++;
+		}
+	}
+	if(document.getElementById("g1").checked)
+	{
+		genderval = document.getElementById("g1").value;
+	}
+	else
+	{
+		genderval = document.getElementById("g2").value;
+	}
+	var details =
+	{
+		fname : document.getElementById("f1").value,
+		lname : document.getElementById("f2").value,
+		email : document.getElementById("f3").value,
+		phone : document.getElementById("f4").value,
+		address : document.getElementById("address").value,
+		uname : document.getElementById("f6").value	,
+		password : document.getElementById("f7").value,
+		gender : genderval,
+		qualification : document.getElementById("qual").value,
+		experience : document.getElementById("exp1").value,
+		lang : checkval 
+	};	
+	var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);		
+	db.transaction(
+	    function (transaction) {
+		var id = document.getElementById("id").value;
+		var data = [details.fname,details.lname,details.email,details.phone,details.address,details.uname,details.password,details.gender,details.qualification,details.experience,details.lang];
+		transaction.executeSql('update emp_details set fname = ?, lname = ?, email = ?, contact = ?, address = ?, username = ?, password = ?, gender = ?, qualification = ?, experience = ?, language = ? where id = ?', [data[0], data[1], data[2], data[3], data[4],data[5],data[6],data[7],data[8],data[9],data[10],id],selectAll());
+	    });	
+	location.reload();	
+}
+
+				
+
+
+
+/* function uni1()
+{
+	alert("c");
+		var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+		var a = document.getElementById("f6").value;
+		alert(a);
+		var book1 = [];	
+		var i;	
+		var len;
+		var k =1;
+		db.transaction(function (tx) {
+			 tx.executeSql('SELECT * FROM emp_details', [], function (tx, results) {
+			  len = results.rows.length;				
+			  		alert(len);
+					  for (i = 0; i < len; i++)
+					  {
+						book1[i]=results.rows.item(i);						
+					  }	
+
+						for (i = 0; i < len; i++)
+						  {
+							alert(book1[i].username+" "+a);
+							if (a == book1[i].username )
+							{
+							k=k+1;	
+							}							
+						  }										  
+				}, null);
+				 });	
+				 
+				 
+		if( k > 1)
+		{
+		return false;
+		}
+		else 
+		{
+		return true;
+		}
+				 
+}		*/	  
+	
+
+
+</script>
+
+
+
+<form onsubmit="send()">
+
+<label>First Name :<br/> <input type="text" name="fname" id="f1" required /></label>
+<br/><br/>
+<label>Last Name : <br/><input type="text" name="lname" id="f2" required /></label>
+<br/><br/>
+<label>Email : <br/><input type="email" name="emailadd" id="f3" required /></label>
+<br/><br/>
+<label>Contact Number : <br/><input type="tel" name="contact" id="f4" /></label>
+<br/><br/>
+Address: <br/><textarea id="address" maxlength="20" minlength="10" name="address" rows="5" cols="17" required></textarea>
+<br/><br/>
+<label>Username : <br/> <input type="text" name="uname" id="f6" required /></label>
+<br/><br/>
+<label>Password : <br/> <input type="password" name="password" id="f7" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" 
+required /></label>
+<br/><br/>
+
+
+Gender : <br/>
+
+<input type="radio" id="g1" name="gender" value="male" required />Male
+<br/>
+<input type="radio" id="g2" name="gender" value="female" />Female
+
+<br/><br/>
+
+Qualifications:<br/>
+<select id="qual" name="qual1" required >
+<option value="" >--select--</option>
+<option> B.com </option>
+<option> Batchelor in technology </option>
+<option> MBA </option>
+<option> BE </option>
+</select>
+
+<br/><br/>
+
+Experience:<br/>
+<select id="exp1" name="exp" >
+<option value="" >--select--</option>
+<option> 1-2 years</option>
+<option> 2-4 years</option>
+<option> 4-6 years</option>
+<option> > 6 years</option>
+</select>
+
+
+<br/><br/>
+Coding Languages: <br/>
+<label><input type="checkbox" id="lang1" name="language" value="C/C++" ></input>C/C++</label> <br/>
+<label><input type="checkbox" id="lang2" name="language"  value="C#"></input>C#</label> <br/>
+<label><input type="checkbox" id="lang3" name="language" value="Java"></input>Java</label> <br/>
+<label><input type="checkbox" id="lang4" name="language" value="PHP"></input>PHP</label> <br/>
+<label><input type="checkbox" id="lang5" name="language" value="Python"></input>Python</label> 
+
+<br/><br/><br/>
+
+
+<input type="Submit" value="Submit" />
+<input type="button" value="Save" onclick="save()"/>
+<input type="hidden" id="id" value="" />
+
+<br/><br/><br/>
+
+  <div class="table-responsive">          
+	  <table class="table" id="myTable">    
+		  <tr>
+			<th>Firstname</th>
+			<th>Lastname</th>
+			<th>Email</th>
+			<th>Contact</th>
+			<th>Address</th>
+			<th>Username</th>
+			<th>Password</th>
+			<th>Gender</th>
+			<th>Qualifications</th>
+			<th>Experience</th>
+			<th>Coding Languages</th>
+			<th>Delete??</th>
+			<th>Edit??</th>
+			
+		  </tr>	  
+		  </table>
+  </div>
+
+
+
+</form>
+
+
+</body>
+</html>
